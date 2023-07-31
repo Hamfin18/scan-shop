@@ -6,6 +6,7 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use DB;
+
 class ItemController extends Controller
 {
     /**
@@ -35,12 +36,12 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {     
-        $validatedData = $request->validate([            
+    {
+        $validatedData = $request->validate([
             'barcode_number' => 'required|unique:items',
             'name' => 'required|min:5',
             'price' => 'required'
-        ]);    
+        ]);
 
         Item::insert($validatedData);
 
@@ -65,9 +66,9 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Item $id)
-    {        
-        return view('item.edit',[
-            'item'=> $id
+    {
+        return view('item.edit', [
+            'item' => $id
         ]);
     }
 
@@ -82,11 +83,11 @@ class ItemController extends Controller
     {
         // dd($item);
         //
-        Item::where('id',$item->id)
+        Item::where('id', $item->id)
             ->update([
                 'barcode_number' => $request->barcode_number,
                 'name' => $request->name,
-                'price' => $request->price                
+                'price' => $request->price
             ]);
 
         return redirect('/admin/item');
@@ -108,12 +109,12 @@ class ItemController extends Controller
     public function search()
     {
         $search_text = $_GET['query'];
-        $filter = Item::where('barcode_number','LIKE','%'.$search_text.'%')
-                          ->orWhere('name','LIKE','%' . $search_text .'%')
-                          ->orWhere('price','LIKE','%' . $search_text .'%')
-                          ->get();
-        
-        return view('item.index',[
+        $filter = Item::where('barcode_number', 'LIKE', '%' . $search_text . '%')
+            ->orWhere('name', 'LIKE', '%' . $search_text . '%')
+            ->orWhere('price', 'LIKE', '%' . $search_text . '%')
+            ->get();
+
+        return view('item.index', [
             'items' => $filter
         ]);
     }

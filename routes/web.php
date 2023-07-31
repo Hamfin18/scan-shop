@@ -16,42 +16,51 @@ use App\Http\Controllers\ItemController;
 */
 
 Route::get('/', function () {
-    return view('home');
-});
+    $data['title'] = 'Home Page';
+    return view('home', $data);
+})->name('/');
 
 Route::get('/admin', function () {
-    return view('admin');
-});
+    $data['title'] = 'Admin Page';
+    return view('admin', $data);
+})->name('admin');
 
 Route::get('/admin/item', function () {
-    return view('item.index',[
-        'items' => Item::all()
+    return view('item.index', [
+        "title" => "Data Item",
+        "items" => Item::all(),
     ]);
-});
+})->name('admin.item');
 
-Route::get('/item/delete/{id}','App\Http\Controllers\ItemController@destroy');
+Route::get('/item/delete/{id}', 'App\Http\Controllers\ItemController@destroy')
+    ->name('item.delete');
 
-Route::get('/item/edit/{id}','App\Http\Controllers\ItemController@edit');
+Route::get('/item/edit/{id}', 'App\Http\Controllers\ItemController@edit')
+    ->name('item.edit');
 
 
 
-Route::get('/item/search','App\Http\Controllers\ItemController@search');
+Route::get('/item/search', 'App\Http\Controllers\ItemController@search')
+    ->name('item.search');
 
-Route::get('/item/add',function(){
+Route::get('/item/add', function () {
     return view('item.add');
-});
-
-// Route::post('/item/{id}','App\Http\Controllers\ItemController@store');
-Route::post('/item/{item}/edit','App\Http\Controllers\ItemController@update');
+})->name('item.add');
 
 
-Route::get('/buy',function(){
-    return view('buy.index',[
-        "items" => Item::all()
+Route::post('/item/{item}/edit', 'App\Http\Controllers\ItemController@update')
+    ->name('item.item.edit');
+
+
+Route::get('/buy', function () {
+    $data['title'] = 'Buy';
+    return view('buy.index', [
+        "items" => Item::all(),
+        "title" => $data['title'],
     ]);
-});
+})->name('buy');
 
-Route::post('/item',[ItemController::class,'store']);
+Route::post('/item', [ItemController::class, 'store'])
+    ->name('item');
 
-Route::get('/retrive',);
-
+// Route::get('/retrive',);

@@ -10,5 +10,10 @@ class Item extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $fillable = ['barcode_number', 'name', 'price'];
+    protected $fillable = [
+        'barcode_number',
+        'name',
+        'price',
+        'deleted_at',
+    ];
 }

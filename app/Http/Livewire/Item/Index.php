@@ -11,6 +11,7 @@ class Index extends Component
     public $barcode_number;
     public $name;
     public $price;
+    public $selectedId;
 
 
     public function render()
@@ -32,6 +33,20 @@ class Index extends Component
         $this->barcode_number = "";
     }
 
+    public function selectedItem($id)
+    {
+        $this->selectedId = $id;
+        $selected = Item::find($id);
+        $this->name = $selected->name;
+        $this->price = $selected->price;
+        $this->barcode_number = $selected->barcode_number;
+    }
+
+    private function hideModal()
+    {
+        $this->emit('hideModals');
+    }
+
     public function addItem()
     {
         $this->validate([
@@ -47,5 +62,16 @@ class Index extends Component
         ]);
 
         $this->items = Item::all();
+        $this->clearForm();
+        $this->hideModal();
+        $this->emit('modalInfo', 'Data berhasil ditambahkan');
+    }
+
+    public function deleteItem()
+    {
+        Item::find($this->selectedId)->delete();
+        $this->clearForm();
+        $this->hideModal();
+        $this->emit('modalInfo', 'Data berhasil dihapus');
     }
 }

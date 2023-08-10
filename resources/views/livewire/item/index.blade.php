@@ -1,5 +1,11 @@
+@push('sourceJS')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush
+
 <div>
     @include('livewire.item.add')
+    @include('livewire.item.delete')
+
     <div class="row mt-3 d-flex justify-content-center">
         <div class="col-md-12">
             <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalAdd">
@@ -28,9 +34,14 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->price }}</td>
                                     <td>
-                                        <a href="/item/edit/{{ $item->id }}" class="btn bg-primary text-white">Edit</a>
-                                        <a href="/item/delete/{{ $item->id }}" class="btn bg-danger text-white"
-                                            onclick=" return confirm('yakin ingin menghapus?');">Delete</a>
+                                        <button href="" class="btn bg-primary text-white">
+                                            Edit
+                                        </button>
+
+                                        <button type="button" class="btn bg-danger text-white" data-bs-toggle="modal"
+                                            data-bs-target="#modalDelete" wire:click="selectedItem('{{$item->id}}')">
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -44,10 +55,11 @@
 
         <a href="{{route('admin')}}" class="btn bg-danger text-white col-md-1">Back</a>
     </div>
+</div>
 
-    @push('scripts')
-    <script>
-        $(document).ready(function () {            
+@push('scripts')
+<script>
+    $(document).ready(function () {            
         Livewire.on('tableUpdated', function () {
             $('.table_dtable').DataTable().destroy();            
             $('.table_dtable').DataTable({
@@ -78,11 +90,9 @@
             title: text,
             showConfirmButton: false,
             timer: 2000
-            })
-            
+            })            
         });
            
     });
-    </script>
-    @endpush
-</div>
+</script>
+@endpush

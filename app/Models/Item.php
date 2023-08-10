@@ -9,5 +9,6 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $fillable =['barcode_number','name','price'];
+    public $timestamps = false;
+    protected $fillable = ['barcode_number', 'name', 'price'];
 }

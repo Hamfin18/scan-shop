@@ -61,7 +61,7 @@ class Index extends Component
             'price' => $this->price,
         ]);
 
-        $this->items = Item::all();
+        $this->tableUpdate();
         $this->clearForm();
         $this->hideModal();
         $this->emit('modalInfo', 'Data berhasil ditambahkan');
@@ -73,5 +73,27 @@ class Index extends Component
         $this->clearForm();
         $this->hideModal();
         $this->emit('modalInfo', 'Data berhasil dihapus');
+    }
+
+    public function updateItem()
+    {
+        $this->validate([
+            'barcode_number' => 'required|unique:items',
+            'name' => 'required|min:5',
+            'price' => 'required'
+        ]);
+
+        $selected = Item::find($this->selectedId);
+
+        $selected->update([
+            'barcode_number' => $this->barcode_number,
+            'name' => $this->name,
+            'price' => $this->price,
+        ]);
+
+        $this->tableUpdate();
+        $this->clearForm();
+        $this->hideModal();
+        $this->emit('modalInfo', 'Data berhasil diubah');
     }
 }

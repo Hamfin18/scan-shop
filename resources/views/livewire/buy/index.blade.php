@@ -1,4 +1,5 @@
 <div>
+    @include('livewire.buy.add')
     <div class="container">
         {{-- <div class="row d-flex justify-content-center">
             <div class="col-md-4 mt-3">
@@ -6,7 +7,9 @@
             </div>
         </div> --}}
         <h2 class="mt-3">Daftar Pembelian</h2>
-        <button class="btn btn-primary">Tambah belanjaan</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdd">
+            Tambah belanjaan
+        </button>
         <div class="col-md-12 d-flex">
             <table class="table">
                 <thead>

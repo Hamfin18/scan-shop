@@ -1,11 +1,6 @@
 <div>
     @include('livewire.buy.add')
     <div class="container">
-        {{-- <div class="row d-flex justify-content-center">
-            <div class="col-md-4 mt-3">
-                <div id="qr-reader" style="width: 500px"></div>
-            </div>
-        </div> --}}
         <h2 class="mt-3">Daftar Pembelian</h2>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdd">
             Tambah belanjaan
@@ -31,10 +26,10 @@
                 </tbody>
             </table>
 
-            {{-- <div id="qr-reader-results"></div>                                                
-                <div id="harga"></div>
-                <button onclick="jumlah();" class="mt-3 mb-3">Masukkan keranjang</button>            
-                <button onclick="reset();" class="mt-3 mb-3">Reset</button>    --}}
+            {{-- <div id="qr-reader-results"></div>
+            <div id="harga"></div>
+            <button onclick="jumlah();" class="mt-3 mb-3">Masukkan keranjang</button>
+            <button onclick="reset();" class="mt-3 mb-3">Reset</button> --}}
         </div>
 
         <div class="col-md-12">
@@ -58,44 +53,4 @@
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-        crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script>
-        function docReady(fn) {
-            // see if DOM is already available
-            if (document.readyState === "complete" ||
-                document.readyState === "interactive") {
-                // call on next available tick
-                setTimeout(fn, 1);
-            } else {
-                document.addEventListener("DOMContentLoaded", fn);
-            }
-        }
-
-        docReady(function() {
-            var resultContainer = document.getElementById('qr-reader-results').text = 'babu';
-            var lastResult, countResults = 0;
-
-            function onScanSuccess(decodedText, decodedResult) {
-                if (decodedText !== lastResult) {
-                    ++countResults;
-                    lastResult = decodedText;
-                    // Handle on success condition with the decoded message.
-                    console.log(`Scan result ${decodedText}`, decodedResult);
-                    $('#qr-reader-results').text(decodedText);
-                    $('#harga').text(barcodeXharga.get($('#qr-reader-results').text()));
-                    $('#item-name').text(barcodeXname.get($('#qr-reader-results').text()));
-                    $('#item-amount').val(0);
-                }
-            }
-
-            var html5QrcodeScanner = new Html5QrcodeScanner(
-                "qr-reader", {
-                    fps: 10,
-                    qrbox: 250
-                });
-            html5QrcodeScanner.render(onScanSuccess);
-        });
-    </script>
 </div>

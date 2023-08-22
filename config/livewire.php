@@ -1,6 +1,5 @@
 <?php
 
-
 $assetUrl = env('APP_URL');
 
 return [

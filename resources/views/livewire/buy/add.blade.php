@@ -1,3 +1,10 @@
+@push('sourceJS')
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+@endpush
+
 <div>
     <!-- Modal -->
     <div class="modal fade" id="modalAdd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -13,32 +20,39 @@
                     <div class="col-md-12">
                         <div class="mb-3">
                             <div id="qr-reader" style="width:100%" wire:ignore></div>
-                            <label for="exampleInputEmail1" class="form-label">Barcode Number</label>
-                            <input type="text" class="form-control @error('barcode_number') is-invalid @enderror"
-                                name="barcode_number" id="barcode_number" wire:model.defer="barcode_number">
-                            @error('barcode_number')
+                            <div>
+                                <label for="exampleInputEmail1" class="form-label">Barcode Number</label>
+                                <input type="text" class="form-control @error('barcode_number') is-invalid @enderror"
+                                    name="barcode_number" id="barcode_number" wire:model.defer="barcode_number"
+                                    wire:change="nameUpdated">
+                                @error('barcode_number')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
-                            @enderror
-                            <label for="exampleInputEmail1" class="form-label">Item Name</label>
-                            <select wire:model="name" class="js-select2 form-control">
-                                <option value="">Select an option</option>
-                                @if ($options)
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="exampleInputEmail1" class="form-label">Item Name</label>
+                                <select class="js-select2 form-control" style="width: 100%" wire:model.defer="name"
+                                    id="name">
+                                    <option value="">Select an option</option>
+                                    @if ($options)
                                     @foreach ($options as $option)
-                                        <option value="{{ $option->id }}">{{ $option->name }}</option>
+                                    <option value="{{ $option->id }}">{{ $option->name }}</option>
                                     @endforeach
-                                @endif
-
-                            </select>
-                            @error('name')
+                                    @endif
+                                </select>
+                                @error('name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
-                            @enderror
-                            <label for="exampleInputEmail1" class="form-label">Price</label>
-                            <input type="number" class="form-control" name="price" wire:model.defer="price"
-                                readonly>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="exampleInputEmail1" class="form-label">Price</label>
+                                <input type="number" class="form-control" name="price" wire:model.defer="price"
+                                    readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -50,11 +64,25 @@
             </div>
         </div>
     </div>
-
 </div>
 
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+@push('scripts')
 <script>
+    $(document).ready(function() {
+        $('.js-select2').select2({
+            dropdownParent: $('#modalAdd')
+        });
+                
+        $('.js-select2').on('change', function(e) { 
+            Livewire.emit('triggerSomething', 
+            $('.js-select2').select2("val"));
+        });
+    });
+
+
+    
+
+
     function vidOff() {
         vid.pause();
         vid.src = "";
@@ -101,7 +129,6 @@
                 qrbox: 250
             });
         html5QrcodeScanner.render(onScanSuccess);
-
-
     });
 </script>
+@endpush

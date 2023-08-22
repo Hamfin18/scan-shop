@@ -11,8 +11,11 @@ class Buy extends Component
     public $barcode_number;
     public $name;
     public $price;
+    public $quantity;
+    public $cart = [];
+    public $grandTotal = 0;
 
-    protected $listeners = ['triggerSomething'];
+    protected $listeners = ['nameUpdated'];
 
     public function render()
     {
@@ -31,18 +34,59 @@ class Buy extends Component
 
     public function clearForm()
     {
-        // $this->price = "";
-        // $this->name = "";
-        // $this->barcode_number = "";
+        $this->name = '';
+        $this->price = null;
+        $this->barcode_number = null;
+        $this->quantity = null;
     }
 
-    public function nameUpdated()
+    public function nameUpdated($value)
     {
-        dd('wow');
+        $selected = Item::where('id', $value)->first();
+
+        if ($selected) {
+            $this->name = $selected->id;
+            $this->price = $selected->price;
+            $this->barcode_number = $selected->barcode_number;
+        } else {
+            $this->clearForm();
+        }
+        $this->select2Refresh();
     }
 
-    public function triggerSomething()
+    public function barcodeUpdated()
     {
-        dd('gaz');
+        $selected = Item::where('barcode_number', $this->barcode_number)->first();
+
+        if ($selected) {
+            $this->name = $selected->id;
+            $this->price = $selected->price;
+            $this->barcode_number = $selected->barcode_number;
+        } else {
+            $this->clearForm();
+        }
+        $this->select2Refresh();
+    }
+
+    public function select2Refresh()
+    {
+        $this->emit('select2Refreshed');
+    }
+
+    public function addToCart()
+    {
+        $total = $this->price * $this->quantity;
+
+        $newItem = [
+            'barcode_number' => $this->barcode_number,
+            'name' => $this->name,
+            'price' => $this->price,
+            'quantity' => $this->quantity,
+            'total' => $total,
+        ];
+        $this->cart[] = $newItem;
+        $this->grandTotal = $this->grandTotal + $total;
+
+        $this->select2Refresh();
     }
 }

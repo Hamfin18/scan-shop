@@ -24,7 +24,7 @@
                                 <label for="exampleInputEmail1" class="form-label">Barcode Number</label>
                                 <input type="text" class="form-control @error('barcode_number') is-invalid @enderror"
                                     name="barcode_number" id="barcode_number" wire:model.defer="barcode_number"
-                                    wire:change="nameUpdated">
+                                    wire:change="barcodeUpdated">
                                 @error('barcode_number')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -53,13 +53,17 @@
                                 <input type="number" class="form-control" name="price" wire:model.defer="price"
                                     readonly>
                             </div>
+                            <div>
+                                <label for="exampleInputEmail1" class="form-label">Quantity</label>
+                                <input type="number" class="form-control" name="quantity" wire:model.defer="quantity">
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         wire:click="clearForm">Close</button>
-                    <button type="button" class="btn btn-primary" wire:click="addItem">Submit</button>
+                    <button type="button" class="btn btn-primary" wire:click="addToCart">Tambah ke keranjang</button>
                 </div>
             </div>
         </div>
@@ -71,14 +75,21 @@
     $(document).ready(function() {
         $('.js-select2').select2({
             dropdownParent: $('#modalAdd')
-        });
-                
-        $('.js-select2').on('change', function(e) { 
-            Livewire.emit('triggerSomething', 
-            $('.js-select2').select2("val"));
-        });
+        });                   
     });
 
+
+
+    Livewire.on('select2Refreshed',function(){
+            $('.js-select2').select2({
+                dropdownParent: $('#modalAdd')
+            });  
+        });
+
+    $('.js-select2').on('change', function(e) { 
+            Livewire.emit('nameUpdated', 
+            $('.js-select2').select2("val"));
+        });
 
     
 

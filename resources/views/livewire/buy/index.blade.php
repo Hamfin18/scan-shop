@@ -45,6 +45,12 @@
             <h3 id="harga_total" class="ms-2"> {{number_format($grandTotal, 0, ',', ',')}} </h3>
         </div>
     </div>
-
-
 </div>
+
+@push('scripts')
+<script>
+    Livewire.on('hideModals',function(){
+            $('#modalAdd').modal('hide');                
+        });
+</script>
+@endpush

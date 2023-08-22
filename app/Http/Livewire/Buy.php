@@ -10,6 +10,7 @@ class Buy extends Component
     public $options;
     public $barcode_number;
     public $name;
+    public $nameString;
     public $price;
     public $quantity;
     public $cart = [];
@@ -20,6 +21,7 @@ class Buy extends Component
     public function render()
     {
         $this->options = Item::get();
+        $this->select2Refresh();
         return view('livewire.buy.index');
     }
 
@@ -30,6 +32,11 @@ class Buy extends Component
         // $this->name = $selected->name;
         // $this->price = $selected->price;
         // $this->barcode_number = $selected->barcode_number;
+    }
+
+    private function hideModal()
+    {
+        $this->emit('hideModals');
     }
 
     public function clearForm()
@@ -46,6 +53,7 @@ class Buy extends Component
 
         if ($selected) {
             $this->name = $selected->id;
+            $this->nameString = $selected->name;
             $this->price = $selected->price;
             $this->barcode_number = $selected->barcode_number;
         } else {
@@ -60,6 +68,7 @@ class Buy extends Component
 
         if ($selected) {
             $this->name = $selected->id;
+            $this->nameString = $selected->name;
             $this->price = $selected->price;
             $this->barcode_number = $selected->barcode_number;
         } else {
@@ -79,7 +88,7 @@ class Buy extends Component
 
         $newItem = [
             'barcode_number' => $this->barcode_number,
-            'name' => $this->name,
+            'name' => $this->nameString,
             'price' => $this->price,
             'quantity' => $this->quantity,
             'total' => $total,
@@ -87,6 +96,8 @@ class Buy extends Component
         $this->cart[] = $newItem;
         $this->grandTotal = $this->grandTotal + $total;
 
+        $this->hideModal();
+        $this->clearForm();
         $this->select2Refresh();
     }
 }

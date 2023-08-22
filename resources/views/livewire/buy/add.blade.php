@@ -78,22 +78,17 @@
         });                   
     });
 
-
-
     Livewire.on('select2Refreshed',function(){
-            $('.js-select2').select2({
-                dropdownParent: $('#modalAdd')
-            });  
-        });
+        $('.js-select2').select2({
+            dropdownParent: $('#modalAdd')
+        });  
+    });
 
     $('.js-select2').on('change', function(e) { 
-            Livewire.emit('nameUpdated', 
-            $('.js-select2').select2("val"));
-        });
-
+        Livewire.emit('nameUpdated', 
+        $('.js-select2').select2("val"));
+    });    
     
-
-
     function vidOff() {
         vid.pause();
         vid.src = "";

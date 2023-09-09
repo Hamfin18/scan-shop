@@ -16,11 +16,14 @@ class Buy extends Component
     public $cart = [];
     public $grandTotal = 0;
 
-    protected $listeners = ['nameUpdated', 'resetCart'];
+    protected $listeners = [
+        'nameUpdated',
+        'resetCart'
+    ];
 
     public function mount()
     {
-        $this->quantity = 1;
+        $this->quantity = null;
     }
 
     public function render()
@@ -49,7 +52,16 @@ class Buy extends Component
         $this->name = '';
         $this->price = null;
         $this->barcode_number = null;
-        $this->quantity = null;
+        $this->quantity = 1;
+    }
+
+    public function validateAll()
+    {
+        $this->validate([
+            'name' => 'required',
+            'barcode_number' => 'required',
+            'quantity' => 'required',
+        ]);
     }
 
     public function nameUpdated($value)
@@ -89,6 +101,8 @@ class Buy extends Component
 
     public function addToCart()
     {
+        $this->validateAll();
+
         $total = $this->price * $this->quantity;
 
         $newItem = [

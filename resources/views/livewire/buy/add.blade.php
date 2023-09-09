@@ -1,8 +1,7 @@
 @push('sourceJS')
-
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 @endpush
 
 <div>
@@ -26,37 +25,49 @@
                                     name="barcode_number" id="barcode_number" wire:model.defer="barcode_number"
                                     wire:change="barcodeUpdated">
                                 @error('barcode_number')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
                                 @enderror
                             </div>
                             <div>
                                 <label for="exampleInputEmail1" class="form-label">Item Name</label>
-                                <select class="js-select2 form-control" style="width: 100%" wire:model.defer="name"
-                                    id="name">
+                                <select class="js-select2 form-control @error('name') is-invalid @enderror"
+                                    style="width: 100%" wire:model.defer="name" id="name">
                                     <option value="">Select an option</option>
                                     @if ($options)
-                                    @foreach ($options as $option)
-                                    <option value="{{ $option->id }}">{{ $option->name }}</option>
-                                    @endforeach
+                                        @foreach ($options as $option)
+                                            <option value="{{ $option->id }}">{{ $option->name }}</option>
+                                        @endforeach
                                     @endif
                                 </select>
                                 @error('name')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
                                 @enderror
                             </div>
                             <div>
                                 <label for="exampleInputEmail1" class="form-label">Price</label>
                                 <input type="number" class="form-control" name="price" wire:model.defer="price"
                                     readonly>
+                                @error('price')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div>
                                 <label for="exampleInputEmail1" class="form-label">Quantity</label>
-                                <input type="number" class="form-control" name="quantity" wire:model.defer="quantity">
+                                <input type="number" class="form-control @error('quantity') is-invalid @enderror"
+                                    name="quantity" wire:model.defer="quantity">
+                                @error('quantity')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -71,70 +82,70 @@
 </div>
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        $('.js-select2').select2({
-            dropdownParent: $('#modalAdd')
-        });                   
-    });
+    <script>
+        $(document).ready(function() {
+            $('.js-select2').select2({
+                dropdownParent: $('#modalAdd')
+            });
+        });
 
-    Livewire.on('select2Refreshed',function(){
-        $('.js-select2').select2({
-            dropdownParent: $('#modalAdd')
-        });  
-    });
+        Livewire.on('select2Refreshed', function() {
+            $('.js-select2').select2({
+                dropdownParent: $('#modalAdd')
+            });
+        });
 
-    $('.js-select2').on('change', function(e) { 
-        Livewire.emit('nameUpdated', 
-        $('.js-select2').select2("val"));
-    });    
-    
-    function vidOff() {
-        vid.pause();
-        vid.src = "";
-        localstream.stop();
-    }
+        $('.js-select2').on('change', function(e) {
+            Livewire.emit('nameUpdated',
+                $('.js-select2').select2("val"));
+        });
 
-
-    function docReady(fn) {
-        // see if DOM is already available
-        if (document.readyState === "complete" ||
-            document.readyState === "interactive") {
-            // call on next available tick
-            setTimeout(fn, 1);
-        } else {
-            document.addEventListener("DOMContentLoaded", fn);
+        function vidOff() {
+            vid.pause();
+            vid.src = "";
+            localstream.stop();
         }
-    }
 
-    docReady(function() {
-        var lastResult, countResults = 0;
 
-        function onScanSuccess(decodedText, decodedResult) {
-            if (decodedText !== lastResult) {
-                ++countResults;
-                lastResult = decodedText;
-                // Handle on success condition with the decoded message.
-                console.log(`Scan result ${decodedText}`, decodedResult);
-                $('#barcode_number').val(decodedText);
-                if ($('#barcode_number').val(decodedText) != null) {
-                    alert('barcode berhasil ter isi');
-                    $('#qr-reader').hide();
-                    const video = document.querySelector('video');
-                    const mediaStream = video.srcObject;
-                    const tracks = mediaStream.getTracks();
-                    tracks[0].stop();
-                    tracks.forEach(track => track.stop())
-                }
+        function docReady(fn) {
+            // see if DOM is already available
+            if (document.readyState === "complete" ||
+                document.readyState === "interactive") {
+                // call on next available tick
+                setTimeout(fn, 1);
+            } else {
+                document.addEventListener("DOMContentLoaded", fn);
             }
         }
 
-        var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", {
-                fps: 10,
-                qrbox: 250
-            });
-        html5QrcodeScanner.render(onScanSuccess);
-    });
-</script>
+        docReady(function() {
+            var lastResult, countResults = 0;
+
+            function onScanSuccess(decodedText, decodedResult) {
+                if (decodedText !== lastResult) {
+                    ++countResults;
+                    lastResult = decodedText;
+                    // Handle on success condition with the decoded message.
+                    console.log(`Scan result ${decodedText}`, decodedResult);
+                    $('#barcode_number').val(decodedText);
+                    if ($('#barcode_number').val(decodedText) != null) {
+                        alert('barcode berhasil ter isi');
+                        $('#qr-reader').hide();
+                        const video = document.querySelector('video');
+                        const mediaStream = video.srcObject;
+                        const tracks = mediaStream.getTracks();
+                        tracks[0].stop();
+                        tracks.forEach(track => track.stop())
+                    }
+                }
+            }
+
+            var html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", {
+                    fps: 10,
+                    qrbox: 250
+                });
+            html5QrcodeScanner.render(onScanSuccess);
+        });
+    </script>
 @endpush

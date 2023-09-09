@@ -96,4 +96,6 @@ class Index extends Component
         $this->hideModal();
         $this->emit('modalInfo', 'Data berhasil diubah');
     }
+
+   
 }

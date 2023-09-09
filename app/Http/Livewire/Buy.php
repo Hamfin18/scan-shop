@@ -16,7 +16,12 @@ class Buy extends Component
     public $cart = [];
     public $grandTotal = 0;
 
-    protected $listeners = ['nameUpdated'];
+    protected $listeners = ['nameUpdated', 'resetCart'];
+
+    public function mount()
+    {
+        $this->quantity = 1;
+    }
 
     public function render()
     {
@@ -99,5 +104,11 @@ class Buy extends Component
         $this->hideModal();
         $this->clearForm();
         $this->select2Refresh();
+    }
+
+    public function resetCart()
+    {
+        $this->cart = null;
+        $this->grandTotal = 0;
     }
 }

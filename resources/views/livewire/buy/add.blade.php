@@ -11,9 +11,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    {{-- <h1 class="modal-title fs-5" id="staticBackdropLabel">x</h1> --}}
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        wire:click="clearForm"></button>
+                        wire:click="clearForm">
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="col-md-12">

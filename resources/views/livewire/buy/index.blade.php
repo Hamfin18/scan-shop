@@ -43,6 +43,9 @@
             <button class="mt-3 mb-3 btn btn-primary" onclick="test()">
                 Reset
             </button>
+            <a class="mt-3 mb-3 btn btn-danger" href="{{route('/')}}">
+                Kembali
+            </a>
         </div>
         <div class="col-md-12 d-flex">
             <h3>Total belanja: </h3>

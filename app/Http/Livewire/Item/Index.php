@@ -31,6 +31,8 @@ class Index extends Component
         $this->price = "";
         $this->name = "";
         $this->barcode_number = "";
+
+        $this->resetValidation();
     }
 
     public function selectedItem($id)
@@ -96,6 +98,4 @@ class Index extends Component
         $this->hideModal();
         $this->emit('modalInfo', 'Data berhasil diubah');
     }
-
-   
 }

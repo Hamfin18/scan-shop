@@ -57,7 +57,9 @@
             </div>
         </div>
 
-        <a href="{{ route('admin') }}" class="btn bg-danger text-white col-md-1">Back</a>
+        <a href="{{ route('admin') }}" class="btn bg-danger text-white col-md-1 mt-3">
+            Back
+        </a>
     </div>
 </div>
 

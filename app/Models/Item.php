@@ -4,10 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
-    protected $fillable =['barcode_number','name','price'];
+    public $timestamps = false;
+    protected $fillable = [
+        'barcode_number',
+        'name',
+        'price',
+        'deleted_at',
+    ];
 }
